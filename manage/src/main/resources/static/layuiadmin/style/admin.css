@@ -740,7 +740,7 @@ html {
     padding: 10px 15px;
     background-color: #f8f8f8;
     color: #999;
-    border-radius: 2px;
+    border-radius: 5px;
     transition: all .3s;
     -webkit-transition: all .3s
 }
@@ -1101,4 +1101,15 @@ html {
     .layui-body .layui-nav .layui-nav-item {
         display: block
     }
+}
+
+.panel_icon {
+    width: 40%;
+    display: inline-block;
+    padding: 22px 0;
+    /*background-color: #54ade8;*/
+    float: left;
+}
+.layui-col-xs3{
+    text-align: center;
 }

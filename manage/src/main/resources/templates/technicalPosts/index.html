@@ -12,17 +12,19 @@
                  return " <span class=\"layui-badge layui-bg-green\">" + t.teacher.fullName + "</span>";
             }
         },
-        {
-            title: '附件', templet: function (s) {
-                if (s.annex != undefined && s.annex != "") {
-                    var o = JSON.parse(s.annex)
-                    return  o.map(function (item) {
-                        return " <a target='_blank' href='/file/"+item.fileName+"'><span class=\"layui-badge layui-bg-green\">" + item.file.fileName + "</span></a>";
-                    }).join(" ")
-                }
-                return "无"
-            }
-        },
+        //todo 列表页不显示附件
+
+        // {
+        //     title: '附件', templet: function (s) {
+        //         if (s.annex != undefined && s.annex != "") {
+        //             var o = JSON.parse(s.annex)
+        //             return  o.map(function (item) {
+        //                 return " <a target='_blank' href='/file/"+item.fileName+"'><span class=\"layui-badge layui-bg-green\">" + item.file.fileName + "</span></a>";
+        //             }).join(" ")
+        //         }
+        //         return "无"
+        //     }
+        // },
         {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
     ]
 </script>

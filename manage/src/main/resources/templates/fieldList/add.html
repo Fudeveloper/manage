@@ -35,11 +35,23 @@
     #if(me!=null)
     <input type="hidden" name="id" value="#(me.id??)">
     #end
-
+    <!--todo 表单模版列表页，增加创建人、创建时间字段-->
     <div class="layui-form-item">
         <label class="layui-form-label">模版名称</label>
         <div class="layui-input-block">
             <input class="layui-input" name="name" id="name" value="#(me.name??)" placeholder="请输入模版名称">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">创建人</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="name" id="name" value="#(me.name??)" placeholder="创建人">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">创建时间</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="name" id="name" value="#(me.name??)" placeholder="创建时间">
         </div>
     </div>
     <div class="layui-form-item">
