@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all"/>
+</head>
+<body style="padding: 20px;">
+<form class="layui-form" action="">
+
+    #if(me!=null)
+    <input type="hidden" name="id" value="#(me.id??)">
+    #end
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">帐号</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="username" value="#(me.username??)" placeholder="请输入帐号">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="password"  type="password" value="#(me.password??)" placeholder="请输入密码">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/static/js/Jquery-ajax.js"></script>
+<script>
+    layui.use(['form', 'laydate'], function () {
+        var form = layui.form, laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#birthday'
+        });
+
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            $.post("/user/save", data.field, function (res) {
+                if (res.code == 500) {
+                    layer.alert(res.message)
+                }
+                else {
+                    parent.location.reload();
+                }
+            })
+            return false;
+        });
+
+
+    });
+</script>
+</body>
+</html>

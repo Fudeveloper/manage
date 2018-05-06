@@ -1,0 +1,149 @@
+#define layout()
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>学生管理系统</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <style>
+         body,html{
+             min-height: 100%;
+         }
+    </style>
+</head>
+
+<body style="padding: 20px;">
+#@body()
+<script src="/static/layui/layui.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/static/js/Jquery-ajax.js"></script>
+
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table, form = layui.form;
+        var where = {}
+        var filterIndex = null;
+        table.render({
+            elem: '#test',
+            url: '/teacher/list',
+            where: where,
+            page: true,
+            cols: [[
+                {type: 'checkbox', fixed: 'left'},
+                {field: 'id', title: 'ID', width: 80, sort: true},
+                {
+                    title: '系部', templet: function (v) {
+                        return v.department.name;
+                    }
+                },
+                {
+                    title: '姓名',field:'fullName', sort: true
+                },
+                {
+                    title: '职称', field:'jobTitle', sort: true
+                },
+                {
+                    title: '学历', field:'educationTitle', sort: true
+                },
+                {
+                    title: '出生日期', field:'birthday', sort: true
+                },
+                {
+                    title: '工号', field:'jobNumber', sort: true
+                },
+                {
+                    title: '性别', field:'sexTitle', sort: true
+                },
+                {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+            ]]
+        });
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            where = data.field;
+            table.reload('test', {
+                url: '/teacher/list',
+                where: where,
+            });
+            layer.close(filterIndex)
+            return false;
+        });
+
+        table.on('tool(demo)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'detail') {
+                layer.msg('ID：' + data.id + ' 的查看操作');
+            } else if (obj.event === 'del') {
+                tools.delete([{id:obj.data.id}])
+            } else if (obj.event === 'edit') {
+                tools.form(obj.data.id)
+            }
+        });
+
+        var $ = layui.$, active = {
+            deleteAll: function () { //获取选中数据
+                var checkStatus = table.checkStatus('test')
+                    , data = checkStatus.data;
+                console.log(data)
+                tools.delete(data.map(function (value) {
+                    return {id:value.id}
+                }))
+            },
+            add: function () {
+                tools.form(0)
+            },
+            filter: function () {
+                filterIndex = layer.open({
+                    type: 1,
+                    area: ['820px', '540px'], //宽高
+                    content: $('#filter').html(),
+                    success: function () {
+                        form.render()
+                    }
+                });
+            }
+        };
+        var tools = {
+            modelName: 'teacher',
+            delete: function (obj) {
+                layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        url: '/' + tools.modelName + '/delete',
+                        type: 'POST',
+                        contentType: "application/json",
+                        data: JSON.stringify(obj),
+                        datType: "JSON",
+                        success: function (res) {
+                            layer.close(index);
+                            window.location.reload();
+                        },
+                        error: function (j) {
+                            var obj = JSON.parse(j.responseText)
+                            layer.msg(obj.message)
+                        }
+                    })
+
+                });
+            },
+            form: function (id) {
+                var index = layer.open({
+                    type: 2,
+                    area: ['400px', '800px'],
+                    maxmin: true,
+                    content: '/' + tools.modelName + '/form/' + id //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                });
+                layer.full(index);
+            }
+        }
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    })
+</script>
+#@js()
+</body>
+</html>
+#end

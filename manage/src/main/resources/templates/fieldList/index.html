@@ -1,0 +1,18 @@
+#@list("fieldList")
+#define cols()
+<script>
+    var cols = [
+        {type: 'checkbox', fixed: 'left'},
+         {field: 'bh', title: '模版编号'},
+         {field: 'name', title: '模版名称'},
+         {field: 'tableExpend', title: '所选扩展表'},
+         { title: '记录数',field:'count'},
+        {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+    ]
+</script>
+#end
+
+#define detail()
+console.log(data)
+parent.layui.index.openTabsPage('/fieldList/rd/'+data.id,data.name+' - 上传数据页')
+#end

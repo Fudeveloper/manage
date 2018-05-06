@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" href="/static/ztree/css/demo.css" type="text/css">
+    <link rel="stylesheet" href="/static/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="/static/ztree/js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="/static/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="/static/ztree/js/jquery.ztree.excheck.js"></script>
+    <SCRIPT type="text/javascript">
+        <!--
+        var setting = {
+            check: {
+                enable: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        };
+
+        var zNodes = #(permissionList??);
+
+        $(document).ready(function () {
+           $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            var tree = $.fn.zTree.getZTreeObj("treeDemo")
+            var selectNode= #(selectedList??"[]");
+            selectNode.forEach(function (value) {
+                var node = tree.getNodeByParam("id",value.id);
+                tree.checkNode(node, true, true);
+            })
+        });
+        //-->
+    </SCRIPT>
+</head>
+<body style="padding: 20px;">
+<form class="layui-form" action="">
+
+    #if(me!=null)
+    <input type="hidden" name="id" value="#(me.id??)">
+    #end
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" lay-verify="required" name="name"
+                   placeholder="请输入用户组名称" value="#(me.name??)">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">权限</label>
+        <div class="layui-input-inline">
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="/static/js/Jquery-ajax.js"></script>
+<script>
+    layui.use(['form', 'laydate'], function () {
+        var form = layui.form, laydate = layui.laydate;
+
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            var tree = $.fn.zTree.getZTreeObj("treeDemo");
+            console.log(tree)
+            data.field.permissions=tree.getCheckedNodes().map(function (value) { return {id:value.id}})
+            $.ajax({
+                url:'/role/save',
+                type:'POST',
+                data:JSON.stringify(data.field),
+                dataType:'JSON',
+                contentType: "application/json; charset=utf-8",
+                success:function (res) {
+                    if (res.code == 500) {
+                        layer.alert(res.message)
+                    }
+                    else {
+                        parent.location.reload();
+                    }
+                }
+            })
+            return false;
+        });
+
+
+    });
+</script>
+</body>
+</html>

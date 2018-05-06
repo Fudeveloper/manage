@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all"/>
+    <style>
+        /**treeselect*/
+        .layui-form-select .layui-tree {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 42px;
+            padding: 5px 0;
+            z-index: 999;
+            min-width: 100%;
+            border: 1px solid #d2d2d2;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #fff;
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
+            box-sizing: border-box;
+        }
+
+        .layui-form-selected .layui-tree {
+            display: block;
+        }
+    </style>
+</head>
+<body style="padding: 20px;">
+<form class="layui-form" action="">
+
+
+    #if(me!=null)
+    <input type="hidden" name="id" value="#(me.id??)">
+    #end
+
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>基础信息</legend>
+    </fieldset>
+    #for(item:(com.summer.manage.utils.UserUtils::getReportForm(me.formId)).fieldBase)
+    #set(x=com.summer.manage.utils.UserUtils::forField(item))
+    <div class="layui-form-item">
+        <label class="layui-form-label">#(x.fieldLabel)</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="#(x.fieldAttr)" value="#(me.dataBase[x.fieldAttr])" placeholder="请输入#(x.fieldLabel)">
+        </div>
+    </div>
+    #end
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>#(((com.summer.manage.utils.UserUtils::getField((com.summer.manage.utils.UserUtils::getReportForm(me.formId)).tableExpend))))</legend>
+    </fieldset>
+    #for(item:(com.summer.manage.utils.UserUtils::getReportForm(me.formId)).fieldExpend)
+    #set(x=com.summer.manage.utils.UserUtils::forField(item))
+    <div class="layui-form-item">
+        <label class="layui-form-label">#(x.fieldLabel)</label>
+        <div class="layui-input-block">
+            <input class="layui-input" name="#(x.fieldAttr)" value="#(me.dataExpand[x.fieldAttr])" placeholder="请输入#(x.fieldLabel)">
+        </div>
+    </div>
+    #end
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/static/js/Jquery-ajax.js"></script>
+<script>
+    layui.config({
+        base: '/static/layui/lay/modules/' //你的模块目录
+    })//加载入口
+</script>
+<script>
+    layui.use(['form', 'laydate', 'jquery'], function () {
+        var form = layui.form, laydate = layui.laydate, $ = layui.jquery;
+
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            console.log(data.field)
+
+
+            $.ajax({
+                url: '/fieldList/rd/data/save',
+                type: 'POST',
+                contentType: "application/json",
+                data: JSON.stringify(data.field),
+                datType: "JSON",
+                success: function (res) {
+                    if(res.code==200){
+                        parent.location.reload()
+                    }
+                    else{
+                        layer.msg(res.message)
+                    }
+                },
+                error: function (j) {
+                    var obj = JSON.parse(j.responseText)
+                    layer.msg(obj.message)
+                }
+            })
+
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

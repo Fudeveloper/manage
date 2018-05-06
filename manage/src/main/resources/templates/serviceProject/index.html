@@ -1,0 +1,41 @@
+#@list("serviceProject")
+#define cols()
+<script>
+    var cols = [
+        {type: 'checkbox', fixed: 'left'},
+         {field: 'projectName', title: '项目名称'},
+         {field: 'projectInstitution', title: '承担单位或部门'},
+         {field: 'projectTeam', title: '依托机构或团队'},
+         {field: 'otherMember', title: '其他成员'},
+         {field: 'cooperationInstitution', title: '合作单位'},
+         {field: 'projectContent', title: '项目内容'},
+         {field: 'projectOfficialDocument', title: '项目相关文件'},
+         {field: 'contractMoney', title: '合同金额'},
+         {field: 'achievementName', title: '成果名称'},
+         { title: '成果类型',templet:function (s) {
+                 return " <span class=\"layui-badge layui-bg-green\">" + s.achievementType.name+"</span>";
+             }},
+         {field: 'achievementOwner', title: '成果权利人'},
+         {field: 'achievementContent', title: '成果内容'},
+         {field: 'achievementAdscription', title: '成果归属'},
+         {field: 'achievementOfficialDocument', title: '成果相关文件'},
+        {
+            title: '教师', templet: function (s) {
+                return " <span class=\"layui-badge layui-bg-green\">" + s.teacher.fullName + "</span>";
+            }
+        },
+        {
+            title: '附件', templet: function (s) {
+                if (s.annex != undefined && s.annex != "") {
+                    var o = JSON.parse(s.annex)
+                    return  o.map(function (item) {
+                        return " <a target='_blank' href='/file/"+item.fileName+"'><span class=\"layui-badge layui-bg-green\">" + item.file.fileName + "</span></a>";
+                    }).join(" ")
+                }
+                return "无"
+            }
+        },
+        {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+    ]
+</script>
+#end

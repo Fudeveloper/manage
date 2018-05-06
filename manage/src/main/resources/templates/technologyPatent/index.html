@@ -1,0 +1,39 @@
+#@list("technologyPatent")
+#define cols()
+<script>
+
+    var cols = [
+        {type: 'checkbox', fixed: 'left'},
+        {field: 'name', title: '名称'},
+        {
+            title: '专利类型', templet: function (p) {
+                return " <span class=\"layui-badge layui-bg-green\">" + p.patentType.name + "</span>";
+            }
+        },
+        {field: 'number', title: '专利编号'},
+        {field: 'getDate', title: '获取日期'},
+        {
+            title: '本人排名', templet: function (m) {
+                return " <span class=\"layui-badge layui-bg-green\">" + m.myRanking.name + "</span>"
+            }
+        },
+        {
+            title: '教师', templet: function (t) {
+                return  " <span class=\"layui-badge layui-bg-green\">" + t.teacher.fullName + "</span>"
+            }
+        },
+        {
+            title: '附件', templet: function (s) {
+                if (s.annex != undefined && s.annex != "") {
+                    var o = JSON.parse(s.annex)
+                    return  o.map(function (item) {
+                        return " <a target='_blank' href='/file/"+item.fileName+"'><span class=\"layui-badge layui-bg-green\">" + item.file.fileName + "</span></a>";
+                    }).join(" ")
+                }
+                return "无"
+            }
+        },
+        {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+    ]
+</script>
+#end

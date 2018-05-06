@@ -1,0 +1,18 @@
+#@list("user")
+#define cols()
+<script>
+    var cols = [
+        {type: 'checkbox', fixed: 'left'},
+        {field: 'id', title: 'ID', width: 80, sort: true},
+        {field: 'username', title: '用户名'},
+        {field: 'userState', sort: true, title: '用户状态'},
+        {
+            title: '角色', templet: function (s) {
+                return " <span class=\"layui-badge layui-bg-green\">"+s.roles[0].name+"</span>"
+            }
+        },
+        {field: 'lastLoginTime', sort: true, title: '最后登录时间'},
+        {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+    ];
+</script>
+#end

@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>学生管理系统</title>
+    <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+
+    <style>
+        body, html {
+            min-height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body" pad15="">
+                    <div class="layui-btn-group demoTable " style="margin-bottom: 10px;">
+                        <button class="layui-btn" data-type="import">数据导入</button>
+                        <button class="layui-btn" data-type="deleteAll">清空数据</button>
+                    </div>
+                    <table class="layui-hide" id="test" lay-filter="demo"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+
+    <script type="text/html" id="filter">
+    <form method="get" class="layui-form" style="padding: 20px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">系部</label>
+            <div class="layui-input-block">
+                <select name="xb">
+                    #for(d:department)
+                    <option value="#(d.id)">#(d.name)</option>
+                    #end
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">科室</label>
+            <div class="layui-input-block">
+                <select name="ks">
+                    #for(d:departments)
+                    <option value="#(d.id)">#(d.name)</option>
+                    #end
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">工号</label>
+            <div class="layui-input-block">
+                <input class="layui-input" name="jobNumber" id="jobNumber" placeholder="请输入工号">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-block">
+                <input class="layui-input" name="fullName" id="fullName" placeholder="请输入姓名">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">筛选</button>
+            </div>
+        </div>
+    </form>
+</script>
+</div>
+<script src="../../../layuiadmin/layui/layui.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/static/js/Jquery-ajax.js"></script>
+<script type="text/html" id="switchTpl">
+    <!-- 这里的 checked 的状态只是演示 -->
+    <input type="checkbox" name="sex" value="{{d.id}}" lay-skin="switch" lay-filter="sexDemo" {{ d.verify
+           ? 'checked' : '' }}>
+</script>
+<script>
+
+</script>
+<script>
+    var cols = [
+        #for(field:me.fieldBase)
+        {field: '#((com.summer.manage.utils.UserUtils::forField(field)).getFieldAttr())', title: '#((com.summer.manage.utils.UserUtils::forField(field)).getFieldLabel())', width: 178},
+        #end
+       #for(field:me.fieldExpend)
+        {field: '#((com.summer.manage.utils.UserUtils::forField(field)).getFieldAttr())', title: '#((com.summer.manage.utils.UserUtils::forField(field)).getFieldLabel())', width: 178},
+       #end
+        {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+    ]
+</script>
+<script>
+    layui.use(['table', 'form', 'upload'], function () {
+        var table = layui.table, form = layui.form, upload = layui.upload;
+        var where = {}
+        var filterIndex = null;
+
+        //指定允许上传的文件类型
+        upload.render({
+            elem: '#import'
+            , url: '/user/import'
+            , accept: 'file' //普通文件
+            , done: function (res) {
+                if (res.code == 200) {
+                    location.reload()
+                }
+                else {
+                    layer.msg(res.message)
+                }
+            }
+        });
+        var page = true;
+        try {
+            page = paging;
+        } catch (e) {
+
+        }
+        table.render({
+            elem: '#test',
+            url: '/fieldList/rd/data/list/#(me.id)',
+            page: page,
+            cols: [cols]
+        });
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            where = data.field;
+            layer.close(filterIndex)
+            $.ajax({
+                url: '/fieldList/rd/import/'+'#(me.id)'+'?xb='+where.xb+'&ks='+where.ks+'&jobNumber='+where.jobNumber+'&fullName='+where.fullName,
+                type: 'GET',
+                success: function (res) {
+                    if (res.code==200){
+                        layer.msg("导入成功")
+                        location.reload()
+                    }
+                    else{
+                        layer.msg(res.message)
+                    }
+                },
+                error: function (j) {
+                    var obj = JSON.parse(j.responseText)
+                    layer.msg(obj.message)
+                }
+            })
+            return false;
+        });
+//监听性别操作
+        form.on('switch(sexDemo)', function (obj) {
+            $.ajax({
+                url: '/teacher/' + this.value + '/check',
+                type: 'POST',
+                data: {state: obj.elem.checked},
+                success: function (res) {
+                    window.location.reload();
+                },
+                error: function (j) {
+                    var obj = JSON.parse(j.responseText)
+                    layer.msg(obj.message)
+                }
+            })
+        });
+        table.on('tool(demo)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'detail') {
+            } else if (obj.event === 'del') {
+                tools.delete([{id: obj.data.id}])
+            } else if (obj.event === 'edit') {
+                tools.form(obj.data.id)
+            } else if (obj.event === "check") {
+                console.log(obj)
+                var index = layer.open({
+                    type: 2,
+                    area: ['400px', '800px'],
+                    maxmin: true,
+                    content: '/auditResults/form/0' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                });
+                layer.full(index);
+
+            }
+        });
+
+        var $ = layui.$, active = {
+            deleteAll: function () { //获取选中数据
+                var checkStatus = table.checkStatus('test')
+                    , data = checkStatus.data;
+                console.log(data)
+                tools.delete(data.map(function (value) {
+                    return {id: value.id}
+                }))
+            },
+            add: function () {
+                tools.form(0)
+            },
+            import: function () {
+                filterIndex = layer.open({
+                    type: 1,
+                    area: ['820px', '540px'], //宽高
+                    content: $('#filter').html(),
+                    success: function () {
+                        form.render()
+                    }
+                });
+            },
+            export: function () {
+                window.open('/fieldList/export', "_blank")
+            }
+        };
+        var tools = {
+            modelName: 'fieldList',
+            delete: function (obj) {
+                layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        url: '/fieldList/rd/data/delete/'+#(me.id),
+                        type: 'GET',
+                        success: function (res) {
+                            layer.close(index);
+                            window.location.reload();
+                        },
+                        error: function (j) {
+                            var obj = JSON.parse(j.responseText)
+                            layer.msg(obj.message)
+                        }
+                    })
+
+                });
+            },
+            form: function (id) {
+                var index = layer.open({
+                    type: 2,
+                    area: ['400px', '100%'],
+                    maxmin: true,
+                    content: '/fieldList/rd/data/' + id //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                });
+                layer.full(index);
+            }
+        }
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    })
+</script>
+</body>
+</html>

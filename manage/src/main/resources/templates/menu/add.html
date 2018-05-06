@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all"/>
+    <style>
+        /**treeselect*/
+        .layui-form-select .layui-tree {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 42px;
+            padding: 5px 0;
+            z-index: 999;
+            min-width: 100%;
+            border: 1px solid #d2d2d2;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #fff;
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.12);
+            box-sizing: border-box;
+        }
+        .layui-form-selected .layui-tree {
+            display: block;
+        }
+    </style>
+</head>
+<body style="padding: 20px;">
+<form class="layui-form" action="">
+
+    #if(me!=null)
+    <input type="hidden" name="id" value="#(me.id??)">
+    #end
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" value="#(me.name??)" lay-verify="required" autocomplete="off"
+                   placeholder="请输入菜单名"
+                   class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单链接</label>
+        <div class="layui-input-block">
+            <input type="text" name="href" value="#(me.href??)" lay-verify="required" placeholder="请输入链接"
+                   autocomplete="off"
+                   class="layui-input"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单继承</label>
+        <div class="layui-input-block">
+            <select name="pid">
+                <option value="0">不选择</option>
+                #for(p : menuList)
+                <option value="#(p.id)" #if(me.pid??==p.id) selected #end>#(p.name)</option>
+                #end
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/static/js/Jquery-ajax.js"></script>
+<script>
+    layui.config({
+        base: '/static/layui/lay/modules/' //你的模块目录
+    })//加载入口
+</script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+        form.on('submit(demo1)', function (data) {
+            $.post("/menu/save", data.field, function (res) {
+                if (res.code == 500) {
+                    layer.alert(res.message)
+                }
+                else{
+                    parent.location.reload();
+                }
+            })
+            return false;
+        });
+
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+#@list("studentAward")
+#define cols()
+<script>
+    var cols = [
+        {type: 'checkbox', fixed: 'left'},
+         {field: 'name', title: '获奖名称'},
+         {field: 'awarding_unit', title: '获奖单位'},
+         {field: 'student', title: '获奖学生'},
+         {field: 'award_year', title: '获奖年度'},
+         {title: '本人排名',templet:function (s) {
+                 return " <span class=\"layui-badge layui-bg-green\">" + s.myRanking.name+ "</span>";
+             }},
+         { title: '获奖级别',templet:function (s) {
+                 return " <span class=\"layui-badge layui-bg-green\">" + s.level.name+ "</span>";
+             }},
+        {
+            title: '教师', templet: function (s) {
+                return " <span class=\"layui-badge layui-bg-green\">" + s.teacher.fullName + "</span>";
+            }
+        },
+        {
+            title: '附件', templet: function (s) {
+                if (s.annex != undefined && s.annex != "") {
+                    var o = JSON.parse(s.annex)
+                    return  o.map(function (item) {
+                        return " <a target='_blank' href='/file/"+item.fileName+"'><span class=\"layui-badge layui-bg-green\">" + item.file.fileName + "</span></a>";
+                    }).join(" ")
+                }
+                return "无"
+            }
+        },
+        {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+    ]
+</script>
+#end

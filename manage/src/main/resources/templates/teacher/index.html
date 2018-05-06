@@ -1,0 +1,88 @@
+#@list("teacher")
+
+#define custom()
+<button class="layui-btn" id="import">导入</button>
+#end
+#define filter()
+<form class="layui-form" action="">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card" style="padding: 20px;">
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline">
+                            <select name="xb" id="xb">
+                                <option value="0">请选择系部</option>
+                            </select>
+                        </div>
+
+                        <div class="layui-input-inline">
+                            <select name="zc" id="zc">
+                                <option value="0">请选择职称</option>
+                            </select>
+                        </div>
+
+                        <div class="layui-input-inline">
+                            <input type="text" name="fullName"
+                                   class="layui-input" placeholder="请输入姓名"/>
+                        </div>
+                        <div class="layui-input-inline">
+                            <button class="layui-btn" lay-submit="" lay-filter="demo1">筛选</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</form>
+#end
+#define filterEvent()
+loadDepartmentList('xb',0)
+loadSelectList('职称','zc',0)
+#end
+#define cols()
+<script>
+    var cols = [
+        {type: 'checkbox', fixed: 'left'},
+        {field: 'id', title: 'ID', width: 80, sort: true},
+        {field: 'jobNumber', title: '工号'},
+        {field: 'fullName', sort: true, title: '姓名'},
+        {field: 'birthday', sort: true, title: '出生年月'},
+        {
+            title: "职称", templet: function (e) {
+                if(e.zc==undefined){
+                   return "无"
+                }
+                return " <span class=\"layui-badge layui-bg-green\">" + e.zc.name + "</span>";
+            }
+        },
+        {
+            title: "聘用性质", templet: function (e) {
+                return " <span class=\"layui-badge layui-bg-green\">" + e.pyxz.name + "</span>";
+            }
+        },
+        {
+            title: "学历", templet: function (e) {
+                return " <span class=\"layui-badge layui-bg-green\">" + e.education.name + "</span>";
+            }
+        },
+        {
+            title: "学位", templet: function (e) {
+                return " <span class=\"layui-badge layui-bg-green\">" + e.degree.name + "</span>";
+            }
+        },
+        {
+            title: "专业领域", templet: function (e) {
+                return " <span class=\"layui-badge layui-bg-green\">" + e.zyly.name + "</span>";
+            }
+        },
+        {
+            title: "审核",  templet: '#switchTpl',width:185
+        },
+        {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+    ];
+</script>
+#end
+#define detail()
+parent.layui.index.openTabsPage('/teacher/detail/'+data.id,data.fullName+' - 综合资料')
+#end

@@ -1,0 +1,40 @@
+#@list("researchSubject")
+#define cols()
+<script>
+    var cols = [
+        {type: 'checkbox', fixed: 'left'},
+        {
+            title: '课题性质', templet: function (s) {
+                return " <span class=\"layui-badge layui-bg-green\">" + s.natureOfTheProject.name + "</span>";
+            }
+        },
+        {field: 'name', title: '名称'},
+        {field: 'dateOfEstablishment', title: '立项日期'},
+        {field: 'projectSource', title: '项目来源'},
+        {field: 'projectNumber', title: '立项编号'},
+        {field: 'theAmountOfMoney', title: '到款金额'},
+        {
+            title: '本人排名', templet: function (s) {
+                return " <span class=\"layui-badge layui-bg-green\">"+s.myRanking.name+"</span>";
+            }
+        },
+        {
+            title: '教师', templet: function (t) {
+                return " <span class=\"layui-badge layui-bg-green\">"+t.teacher.fullName+"</span>";
+            }
+        },
+        {
+            title: '附件', templet: function (s) {
+                if (s.annex != undefined && s.annex != "") {
+                    var o = JSON.parse(s.annex)
+                    return  o.map(function (item) {
+                        return " <a target='_blank' href='/file/"+item.fileName+"'><span class=\"layui-badge layui-bg-green\">" + item.file.fileName + "</span></a>";
+                    }).join(" ")
+                }
+                return "无"
+            }
+        },
+        {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+    ]
+</script>
+#end

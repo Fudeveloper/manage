@@ -1,0 +1,15 @@
+#@list("departments")
+#define cols()
+<script>
+    var cols = [
+        {type: 'checkbox', fixed: 'left'},
+        {field: 'name', title: '名称'},
+        {
+            title: '系部', templet: function (s) {
+                return " <span class=\"layui-badge layui-bg-green\">" + s.department.name + "</span>";
+            }
+        },
+        {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+    ]
+</script>
+#end

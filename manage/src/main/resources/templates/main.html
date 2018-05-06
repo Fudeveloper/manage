@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>学生管理系统</title>
+    <link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
+
+    <style>
+        body, html {
+            min-height: 100%;
+        }
+    </style>
+</head>
+<style>
+    .layui-input-inline {
+        vertical-align: middle;
+        color: black;
+        line-height: 36px;
+    }
+</style>
+<body>
+<div class="layui-fluid">
+    <blockquote class="layui-elem-quote">这个貌似不用多介绍，因为你已经在太多的地方都看到</blockquote>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md16">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md16">
+                    <div class="layui-card">
+                        <div class="layui-card-header">数局统计</div>
+                        <div class="layui-card-body">
+
+                            <div class="layui-carousel layadmin-carousel layadmin-backlog" lay-anim=""
+                                 lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 100px !important;">
+                                <div carousel-item="">
+                                    <ul class="layui-row layui-col-space10 layui-this">
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" class="layadmin-backlog-body">
+                                                <h3>获奖数</h3>
+                                                <p><cite>#(awards??0)</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" class="layadmin-backlog-body">
+                                                <h3>论文数</h3>
+                                                <p><cite>#(paper??0)</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" class="layadmin-backlog-body">
+                                                <h3>课题数</h3>
+                                                <p><cite>#(researchSubject??0)</cite></p>
+                                            </a>
+                                        </li>
+                                        <li class="layui-col-xs3">
+                                            <a href="javascript:;" class="layadmin-backlog-body">
+                                                <h3>专利数</h3>
+                                                <p><cite>#(technologyPatent)</cite></p>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                    <ul class="layui-row layui-col-space10">
+                                        <li class="layui-col-xs6">
+                                            <a href="javascript:;" class="layadmin-backlog-body">
+                                                <h3>待审友情链接</h3>
+                                                <p><cite style="color: #FF5722;">5</cite></p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="layui-carousel-ind">
+                                    <ul>
+                                        <li class="layui-this"></li>
+                                        <li></li>
+                                    </ul>
+                                </div>
+                                <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
+                                <button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">进修学习</div>
+                <div class="layui-card-body">
+                    <div class="layui-carousel layadmin-carousel layadmin-backlog" lay-anim=""
+                         lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 100px !important;">
+                        <table class="layui-hide" id="test"></table>
+                        <div class="layui-carousel-ind">
+                            <ul>
+                                <li class="layui-this"></li>
+                                <li></li>
+                            </ul>
+                        </div>
+                        <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
+                        <button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">出版书籍</div>
+                <div class="layui-card-body">
+                    <div class="layui-carousel layadmin-carousel layadmin-backlog" lay-anim=""
+                         lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 100px !important;">
+                        <table class="layui-hide" id="test2"></table>
+                        <div class="layui-carousel-ind">
+                            <ul>
+                                <li class="layui-this"></li>
+                                <li></li>
+                            </ul>
+                        </div>
+                        <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
+                        <button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../layuiadmin/layui/layui.js?t=1"></script>
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/static/js/Jquery-ajax.js"></script>
+<script>
+    layui.config({
+        base: '../../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','table'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , element = layui.element
+            , table = layui.table
+            , router = layui.router();
+
+
+        table.render({
+            elem: '#test'
+            ,url:'/publishingBooks/list'
+            ,limit:5
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [[
+                {field:'id', title: 'ID', sort: true},
+                {field: 'name', title: '书籍名称'},
+                {field: 'press', title: '出版社'},
+                {field: 'isbn', title: 'ISBN'},
+                {
+                    title: '本人排名', templet: function (s) {
+                        return " <span class=\"layui-badge layui-bg-green\">" + s.myRanking.name + "</span>";;
+                    }
+                },
+                {field: 'publicationDate', title: '出版日期'},
+                {
+                    title: '教师', templet: function (s) {
+                        return " <span class=\"layui-badge layui-bg-green\">" + s.teacher.fullName + "</span>";
+                    }
+                },
+            ]]
+        });
+        table.render({
+            elem: '#test2'
+            ,url:'/furtherStudy/list'
+            ,limit:5
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [[
+                {field:'id', title: 'ID', sort: true},
+                {field: 'studySchool', title: '进修学校'},
+                {field: 'professionalTitle', title: '专业名称'},
+                {field: 'furtherEducation', title: '进修学历'},
+                {field: 'advancedDegree', title: '进修学位'},
+                {
+                    title: '教师', templet: function (s) {
+                        return " <span class=\"layui-badge layui-bg-green\">"+s.teacher.fullName+"</span>";
+                    }
+                },
+            ]]
+        });
+        element.render();
+
+        element.on('tab(component-tabs-brief)', function (obj) {
+            layer.msg(obj.index + '：' + this.innerHTML);
+        });
+
+        /* 触发事件 */
+        var active = {
+            tabAdd: function () {
+                /* 新增一个Tab项 */
+                element.tabAdd('demo', {
+                    title: '新选项' + (Math.random() * 1000 | 0) /* 用于演示 */
+                    , content: '内容' + (Math.random() * 1000 | 0)
+                    , id: new Date().getTime() /* 实际使用一般是规定好的id，这里以时间戳模拟下 */
+                })
+            }
+            , tabDelete: function (othis) {
+                /* 删除指定Tab项 */
+                element.tabDelete('demo', '22');
+                othis.addClass('layui-btn-disabled');
+            }
+            , tabChange: function () {
+                /* 切换到指定Tab项 */
+                element.tabChange('demo', '33');
+            }
+        };
+
+        $('#component-tabs .site-demo-active').on('click', function () {
+            var othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        });
+
+        /* Hash地址的定位 */
+        var layid = router.hash.replace(/^#layid=/, '');
+        layid && element.tabChange('component-tabs-hash', layid);
+
+        element.on('tab(component-tabs-hash)', function (elem) {
+            location.hash = '/' + layui.router().path.join('/') + '#layid=' + $(this).attr('lay-id');
+        });
+    });
+
+</script>
+</body>
+</html>

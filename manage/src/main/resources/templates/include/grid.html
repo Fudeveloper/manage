@@ -1,0 +1,12 @@
+#[[#@list("]]##(remark)")
+#[[#define cols()]]#
+<script>
+    var cols = [
+        {type: 'checkbox', fixed: 'left'},
+        #for(field:fieldList)
+         {field: '#(field.name)', title: ''},
+        #end
+        {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+    ]
+</script>
+#[[#end]]#

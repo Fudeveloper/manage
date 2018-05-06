@@ -1,0 +1,34 @@
+#@list("publishingBooks")
+#define cols()
+<script>
+    var cols = [
+        {type: 'checkbox', fixed: 'left'},
+        {field: 'name', title: '书籍名称'},
+        {field: 'press', title: '出版社'},
+        {field: 'isbn', title: 'ISBN'},
+        {
+            title: '本人排名', templet: function (s) {
+              return " <span class=\"layui-badge layui-bg-green\">" + s.myRanking.name + "</span>";;
+            }
+        },
+        {field: 'publicationDate', title: '出版日期'},
+        {
+            title: '教师', templet: function (s) {
+                return " <span class=\"layui-badge layui-bg-green\">" + s.teacher.fullName + "</span>";
+            }
+        },
+        {
+            title: '附件', templet: function (s) {
+                if (s.annex != undefined && s.annex != "") {
+                    var o = JSON.parse(s.annex)
+                    return  o.map(function (item) {
+                        return " <a target='_blank' href='/file/"+item.fileName+"'><span class=\"layui-badge layui-bg-green\">" + item.file.fileName + "</span></a>";
+                    }).join(" ")
+                }
+                return "无"
+            }
+        },
+        {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+    ]
+</script>
+#end
