@@ -34,6 +34,16 @@ public class Paper extends BaseEntity {
     @ManyToOne
     Teacher teacher;
 
+    String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     String annex;//附件
 
     public String getAnnex() {

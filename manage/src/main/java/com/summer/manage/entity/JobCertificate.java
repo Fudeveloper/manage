@@ -34,6 +34,15 @@ public class JobCertificate extends BaseEntity {
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
+    String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     String annex;//附件
 

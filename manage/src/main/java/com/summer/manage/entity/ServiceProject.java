@@ -53,6 +53,7 @@ public class ServiceProject extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     String annex;
 
+
     public String getProjectName() {
         return projectName;
     }

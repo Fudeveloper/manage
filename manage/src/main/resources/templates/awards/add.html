@@ -160,9 +160,9 @@
             files = annex;
         }
         catch(err) {console.log(err)}
-
+    // <a href=/flie/'+item.fileName+'>'+item.file.fileName+'</a>
         annex.map(function (item,index) {
-            var tr = $(['<div><span class="layui-badge layui-bg-green" style="margin-bottom: 10px;">'+item.file.fileName+'</span> <button class="layui-btn layui-btn-primary layui-btn-xs" id="remove">删除</button></div>'].join(''));
+            var tr = $(['<div> <span class="layui-badge layui-bg-green" style="margin-bottom: 10px;">'+res.file.fileName+'</span></div> <button class="layui-btn layui-btn-primary layui-btn-xs" id="remove">删除</button></div>'].join(''));
             tr.find('#remove').on('click', function(){
                 tr.remove();
                 delete files[index];

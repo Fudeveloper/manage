@@ -24,6 +24,15 @@ public class TechnicalPosts extends BaseEntity {
     Date getDate;//获取日期
 
     String annex;//附件
+String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     @ManyToOne
     Teacher teacher;

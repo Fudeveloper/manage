@@ -28,11 +28,16 @@
                             </div>
                         </div>
 
+                        <!--todo  添加非法输入的判断-->
                         <div class="layui-form-item">
                             <label class="layui-form-label">工号</label>
                             <div class="layui-input-block">
-                                <input class="layui-input" name="jobNumber" value="#(me.jobNumber??)"
-                                       placeholder="请输入工号">
+                                <input class="layui-input" name="jobNumber" value="#(me.jobNumber??)" id="jobNumber"
+                                       placeholder="请输入工号"
+                                       onkeyup="value=value.replace(/[^0-9a-zA-Z]/g,'')"
+                                        onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^0-9a-zA-Z]/g,''))"
+                                />
+
                             </div>
                         </div>
 
@@ -194,6 +199,11 @@
 <script src="/static/js/Jquery-ajax.js"></script>
 <script>
     layui.use(['form', 'laydate','jquery','upload'], function () {
+        var $=layui.jquery;
+        $("#jobNumber").blur(function () {
+            // alert(1)
+        })
+
         var form = layui.form, laydate = layui.laydate,$=layui.jquery,upload=layui.upload;
         var file='';
         //普通图片上传
