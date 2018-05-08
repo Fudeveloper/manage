@@ -57,13 +57,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label">开始时间</label>
         <div class="layui-input-block">
-            <input class="layui-input" name="startingTime"  id="startingTime" value="#date(me.startingTime??,"yyyy-MM-dd")" placeholder="请输入开始时间">
+            <input readonly="true" class="layui-input" name="startingTime"  id="startingTime" value="#date(me.startingTime??,"yyyy-MM-dd")" placeholder="请输入开始时间">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">结束时间</label>
         <div class="layui-input-block">
-            <input class="layui-input" name="endTime"  id="endTime" value="#date(me.endTime??,"yyyy-MM-dd")" placeholder="请输入结束时间">
+            <input  readonly="true" class="layui-input" name="endTime"  id="endTime" value="#date(me.endTime??,"yyyy-MM-dd")" placeholder="请输入结束时间">
         </div>
     </div>
     <div class="layui-form-item">
@@ -100,6 +100,8 @@
 <script src="/static/layui/layui.js" charset="utf-8"></script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="/static/js/Jquery-ajax.js"></script>
+<script src="/static/js/DateUtil.js"></script>
+
 <script>
     layui.config({
         base: '/static/layui/lay/modules/' //你的模块目录
@@ -107,13 +109,26 @@
 </script>
 <script>
     layui.use(['form','laydate','upload'], function () {
+        var startingTime = $("#startingTime");
+        var endTime = $("#endTime");
+        var startTimeValue = startingTime.val();
+        var endTimeValue = endTime.val();
+
         var form = layui.form,laydate=layui.laydate,upload=layui.upload;
 
         laydate.render({
             elem: '#startingTime'
+            , done: function (value) {
+                console.log(value);
+                $(startingTime).val(value).attr("value",value);
+            }
         });
         laydate.render({
             elem: '#endTime'
+            , done: function (value) {
+                console.log(value);
+                $(endTime).val(value).attr("value",value);
+            }
         });
         var files=[];
         var demoListView = $('.layui-upload-list')
@@ -169,17 +184,26 @@
 
         loadSelectList('行政单位级别','dispatchDepartment',#(me.getDispatchDepartment().id??0))
         form.on('submit(demo1)', function (data) {
-            delete data.field.file
-            data.field.annex = JSON.stringify(files)
-            $.post("/postWorkout/save", data.field, function (res) {
-                if (res.code == 500) {
-                    layer.alert(res.message)
-                }
-                else{
-                    parent.location.reload();
-                }
-            })
-            return false;
+
+            startTimeValue = $("#startingTime").attr("value");
+            endTimeValue = $("#endTime").attr("value");
+            if (!compareDate(startTimeValue, endTimeValue)) {
+                layer.alert("结束时间不能早于开始时间");
+                return false;
+            }else{
+                delete data.field.file
+                data.field.annex = JSON.stringify(files)
+                $.post("/postWorkout/save", data.field, function (res) {
+                    if (res.code == 500) {
+                        layer.alert(res.message)
+                    }
+                    else{
+                        parent.location.reload();
+                    }
+                })
+                return false;
+            }
+
         });
 
 

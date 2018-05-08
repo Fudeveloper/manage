@@ -19,9 +19,10 @@
             overflow-y: auto;
             background-color: #fff;
             border-radius: 2px;
-            box-shadow: 0 2px 4px rgba(0,0,0,.12);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
             box-sizing: border-box;
         }
+
         .layui-form-selected .layui-tree {
             display: block;
         }
@@ -30,7 +31,7 @@
 <body style="padding: 20px;">
 <form class="layui-form" action="">
 
-    
+
     #if(me!=null)
     <input type="hidden" name="id" value="#(me.id??)">
     <input type="hidden" name="teacher" value="#(me.getTeacher().id??)">
@@ -57,19 +58,21 @@
     <div class="layui-form-item">
         <label class="layui-form-label">开始时间</label>
         <div class="layui-input-block">
-            <input class="layui-input" name="startingTime"  id="startingTime" value="#date(me.startingTime??,"yyyy-MM-dd")" placeholder="请输入开始时间">
+            <input readonly="true" class="layui-input" name="startingTime" id="startingTime" value="#date(me.startingTime??," yyyy-MM-dd")"
+            placeholder="请输入开始时间">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">结束时间</label>
         <div class="layui-input-block">
-            <input class="layui-input" name="endTime"  id="endTime" value="#date(me.endTime??,"yyyy-MM-dd")" placeholder="请输入结束时间">
+            <input readonly="true" class="layui-input" name="endTime" id="endTime" value="#date(me.endTime??," yyyy-MM-dd")"
+            placeholder="请输入结束时间">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">备注</label>
         <div class="layui-input-block">
-           <textarea name="remark" class="layui-textarea">#(me.remark??)</textarea>
+            <textarea name="remark" class="layui-textarea">#(me.remark??)</textarea>
         </div>
     </div>
     <div class="layui-form-item">
@@ -93,41 +96,59 @@
 <script src="/static/layui/layui.js" charset="utf-8"></script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="/static/js/Jquery-ajax.js"></script>
+<script src="/static/js/DateUtil.js"></script>
+
 <script>
     layui.config({
         base: '/static/layui/lay/modules/' //你的模块目录
     })//加载入口
 </script>
 <script>
-    layui.use(['form','laydate','upload'], function () {
-        var form = layui.form,laydate=layui.laydate,upload=layui.upload;
+    layui.use(['form', 'laydate', 'upload'], function () {
+        var startingTime = $("#startingTime");
+        var endTime = $("#endTime");
+        var startTimeValue = startingTime.val();
+        var endTimeValue = endTime.val();
+
+        var form = layui.form, laydate = layui.laydate, upload = layui.upload;
         laydate.render({
             elem: '#startingTime'
+            , done: function (value) {
+                console.log(value);
+                $(startingTime).val(value).attr("value",value);
+            }
         });
+
         laydate.render({
             elem: '#endTime'
+            // , min: $('#startingTime').val()
+            , done: function (value) {
+                console.log(value);
+                $(endTime).val(value).attr("value",value);
+            }
         });
-        var files=[];
+
+        var files = [];
         var demoListView = $('.layui-upload-list')
-            ,uploadListIns = upload.render({
+            , uploadListIns = upload.render({
             elem: '#testList'
-            ,url: '/file/upload'
-            ,accept: 'file'
-            ,multiple: true
-            ,auto: true
-            ,done: function(res, index, upload){
-                if(res.code == 200){ //上传成功
-                    if(files.filter(function (item) {
-                            return item.file.hash==res.file.hash
-                        }).length>0){
+            , url: '/file/upload'
+            , accept: 'file'
+            , multiple: true
+            , auto: true
+            , done: function (res, index, upload) {
+                if (res.code == 200) { //上传成功
+                    if (files.filter(function (item) {
+                            return item.file.hash == res.file.hash
+                        }).length > 0) {
                         return
                     }
                     files.push(res)
-                    var tr = $(['<div><span class="layui-badge layui-bg-green" style="margin-bottom: 10px;">'+res.file.fileName+'</span> <button class="layui-btn layui-btn-primary layui-btn-xs" id="remove">删除</button></div>'].join(''));
+                    var tr = $(['<div><span class="layui-badge layui-bg-green" style="margin-bottom: 10px;">' + res.file.fileName + '</span> <button class="layui-btn layui-btn-primary layui-btn-xs" id="remove">删除</button></div>'].join(''));
 
-                    tr.find('#remove').on('click', function(){
+                    tr.find('#remove').on('click', function () {
                         delete files[index]; //删除对应的文件
-                        files.splice(index,1)
+                        files.splice(index, 1)
                         tr.remove();
 
                     });
@@ -137,7 +158,7 @@
                 }
                 this.error(index, upload);
             }
-            ,error: function(index, upload){
+            , error: function (index, upload) {
                 layer.msg("上传失败")
             }
         });
@@ -146,34 +167,53 @@
             annex = JSON.parse($('#annex').val())
             files = annex;
         }
-        catch(err) {console.log(err)}
+        catch (err) {
+            console.log(err)
+        }
 
-        annex.map(function (item,index) {
-            var tr = $(['<div><span class="layui-badge layui-bg-green" style="margin-bottom: 10px;">'+item.file.fileName+'</span> <button class="layui-btn layui-btn-primary layui-btn-xs" id="remove">删除</button></div>'].join(''));
-            tr.find('#remove').on('click', function(){
+        annex.map(function (item, index) {
+            var tr = $(['<div><span class="layui-badge layui-bg-green" style="margin-bottom: 10px;">' + item.file.fileName + '</span> <button class="layui-btn layui-btn-primary layui-btn-xs" id="remove">删除</button></div>'].join(''));
+            tr.find('#remove').on('click', function () {
                 tr.remove();
                 delete files[index];
-                files.splice(index,1)
+                files.splice(index, 1)
             });
 
             demoListView.append(tr)
         })
         form.on('submit(demo1)', function (data) {
-            delete data.field.file
-            data.field.annex = JSON.stringify(files)
-            $.post("/socialWork/save", data.field, function (res) {
-                if (res.code == 500) {
-                    layer.alert(res.message)
-                }
-                else{
-                    parent.location.reload();
-                }
-            })
-            return false;
-        });
 
+            startTimeValue = $("#startingTime").attr("value");
+            endTimeValue = $("#endTime").attr("value");
+
+
+                if (!compareDate(startTimeValue, endTimeValue)) {
+                    layer.alert("结束时间不能早于开始时间");
+                    return false;
+                } else {
+                    $(startingTime).val(startTimeValue).attr("value",startTimeValue);
+                    $(endTime).val(endTimeValue).attr("value",endTimeValue);
+
+                    delete data.field.file
+                    data.field.annex = JSON.stringify(files)
+                    $.post("/socialWork/save", data.field, function (res) {
+                        if (res.code == 500) {
+                            layer.alert(res.message)
+                        }
+                        else {
+                            parent.location.reload();
+                        }
+                    })
+                    return false;
+                }
+
+
+            }
+        );
 
     });
+
+
 </script>
 </body>
 </html>
