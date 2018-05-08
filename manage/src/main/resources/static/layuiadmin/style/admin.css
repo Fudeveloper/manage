@@ -1092,16 +1092,6 @@ html {
     display: inline-block
 }
 
-@media screen and (max-width: 768px) {
-    .layadmin-panel-selection {
-        margin: 0;
-        width: auto
-    }
-
-    .layui-body .layui-nav .layui-nav-item {
-        display: block
-    }
-}
 
 .panel_icon {
     width: 40%;
@@ -1110,6 +1100,31 @@ html {
     /*background-color: #54ade8;*/
     float: left;
 }
+
+@media (max-width: 768px) {
+    .layadmin-panel-selection {
+        margin: 0;
+        width: auto
+    }
+
+    .layui-body .layui-nav .layui-nav-item {
+        display: block
+    }
+
+
+
+    .layui-icon{
+        display: none;
+    }
+    .panel_icon {
+        display: none;
+        float: none;
+    }
+}
+
+
+
 .layui-col-xs3{
     text-align: center;
 }
+

@@ -8,11 +8,19 @@
          // {field: 'tableExpend', title: '所选扩展表'},
          { title: '记录数',field:'count'},
         {fixed: 'right', width: 178, align: 'center', toolbar: '#barDemo'},
+
+        // {
+        //     title: '教师', templet: function (s) {
+        //         console.log(s)
+        //         return " <span class=\"layui-badge layui-bg-green\">" + s.teacher.fullName + "</span>";
+        //     }
+        // },
     ]
 </script>
 #end
 
 #define detail()
+<!--alert(1)-->
 console.log(data)
 parent.layui.index.openTabsPage('/fieldList/rd/'+data.id,data.name+' - 上传数据页')
 #end
