@@ -163,7 +163,7 @@
         })
 
 
-        loadSelectList('专利类型','patentType',#(me.getPatentType().id??0))
+        // loadSelectList('专利类型','patentType',#(me.getPatentType().id??0))
         loadSelectList('本人排名','myRanking',#(me.getMyRanking().id??0))
         form.on('submit(demo1)', function (data) {
             delete data.field.file

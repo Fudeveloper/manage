@@ -117,6 +117,8 @@
 <script>
     layui.use(['form','laydate','upload'], function () {
         var form = layui.form,laydate=layui.laydate,upload=layui.upload;
+        loadSelectList('行政单位级别','awardLevel',#(me.getAwardLevel().id??0))
+        loadSelectList('本人排名','myRanking',#(me.getMyRanking().id??0))
         laydate.render({
             elem: '#getDate'
         });
@@ -172,8 +174,8 @@
             demoListView.append(tr)
         })
 
-        loadSelectList('行政单位级别','awardLevel',#(me.getAwardLevel().id??0))
-        loadSelectList('本人排名','myRanking',#(me.getMyRanking().id??0))
+
+
         form.on('submit(demo1)', function (data) {
             delete data.field.file
             data.field.annex = JSON.stringify(files)

@@ -8,6 +8,7 @@
                  return " <span class=\"layui-badge layui-bg-green\">" + s.level.name + "</span>";
              }},
          {field: 'relatedFileName', title: '相关文件名'},
+        //todo TypeError: s.teacher is null
         {
             title: '教师', templet: function (s) {
                 return " <span class=\"layui-badge layui-bg-green\">" + s.teacher.fullName + "</span>";
