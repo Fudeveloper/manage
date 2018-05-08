@@ -29,7 +29,7 @@
     </style>
 </head>
 <body style="padding: 20px;">
-<form class="layui-form" action="" method="">
+<form class="layui-form" action="">
 
     #if(me!=null)
     <input type="hidden" name="id" value="#(me.id??)">
@@ -117,8 +117,6 @@
 <script>
     layui.use(['form','laydate','upload'], function () {
         var form = layui.form,laydate=layui.laydate,upload=layui.upload;
-        loadSelectList('行政单位级别','awardLevel',#(me.getAwardLevel().id??0))
-        loadSelectList('本人排名','myRanking',#(me.getMyRanking().id??0))
         laydate.render({
             elem: '#getDate'
         });
@@ -162,9 +160,9 @@
             files = annex;
         }
         catch(err) {console.log(err)}
-    // <a href=/flie/'+item.fileName+'>'+item.file.fileName+'</a>
+
         annex.map(function (item,index) {
-            var tr = $(['<div> <span class="layui-badge layui-bg-green" style="margin-bottom: 10px;">'+res.file.fileName+'</span></div> <button class="layui-btn layui-btn-primary layui-btn-xs" id="remove">删除</button></div>'].join(''));
+            var tr = $(['<div><span class="layui-badge layui-bg-green" style="margin-bottom: 10px;">'+item.file.fileName+'</span> <button class="layui-btn layui-btn-primary layui-btn-xs" id="remove">删除</button></div>'].join(''));
             tr.find('#remove').on('click', function(){
                 tr.remove();
                 delete files[index];
@@ -174,8 +172,8 @@
             demoListView.append(tr)
         })
 
-
-
+        loadSelectList('行政单位级别','awardLevel',#(me.getAwardLevel().id??0))
+        loadSelectList('本人排名','myRanking',#(me.getMyRanking().id??0))
         form.on('submit(demo1)', function (data) {
             delete data.field.file
             data.field.annex = JSON.stringify(files)
