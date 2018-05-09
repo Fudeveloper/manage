@@ -41,6 +41,19 @@ public class ResearchSubject extends BaseEntity {
     @ManyToOne
     Teacher teacher;
 
+    //项目级别
+    @NotNull(message = "项目级别不能为空")
+    @ManyToOne
+    Dictionary projectLevel;
+
+    public Dictionary getProjectLevel() {
+        return projectLevel;
+    }
+
+    public void setProjectLevel(Dictionary projectLevel) {
+        this.projectLevel = projectLevel;
+    }
+
 
 
     public Dictionary getMyRanking() {

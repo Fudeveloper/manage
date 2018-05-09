@@ -4,7 +4,7 @@ Source Host     : localhost:3306
 Source Database : admin
 Target Host     : localhost:3306
 Target Database : admin
-Date: 2018-05-09 10:19:12
+Date: 2018-05-09 11:11:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1200,7 +1200,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', '2018-03-11 12:23:27', '2018-05-09 09:59:31', '2018-05-09 09:59:31', '$2a$10$N7Ws5GyACowKSFVSUQMX5.G6tEVuukexgAEtcdr3vYPL.L/zlhUwq', '2', 'admin');
+INSERT INTO `user` VALUES ('1', '2018-03-11 12:23:27', '2018-05-09 11:11:17', '2018-05-09 11:11:17', '$2a$10$N7Ws5GyACowKSFVSUQMX5.G6tEVuukexgAEtcdr3vYPL.L/zlhUwq', '2', 'admin');
 INSERT INTO `user` VALUES ('3', '2018-03-11 12:34:10', '2018-04-18 10:06:08', '2018-04-18 10:06:08', '$2a$10$qQ2rZFmQ/OzAFhMdpR4JEu0mJLMTLJwKA1BFkRE39DFpRiV.TRwc.', '2', 'test123');
 INSERT INTO `user` VALUES ('4', '2018-04-01 04:53:06', '2018-04-18 11:52:22', '2018-04-18 11:52:22', '$2a$10$/opgE1aCvpl.nHWWtFtsNevFKtb9z0FVa9RRxgWP0450yj/AwfmkK', '2', 'test333');
 INSERT INTO `user` VALUES ('24', '2018-04-18 16:32:06', '2018-04-18 16:32:19', '2018-04-18 16:32:19', '$2a$10$yCpVJDvJgoTINscMkNaaHeFuBkm4QNPBzSNMgJ9fK1Mkh5YOxWV2u', '2', 'chen');
