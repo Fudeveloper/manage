@@ -62,8 +62,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">出生年月</label>
                             <div class="layui-input-block">
-                                <input class="layui-input" name="birthday" id="birthday" value="#date(me.birthday??,"
-                                       yyyy-MM-dd")" placeholder="请输入出生年月">
+                                <input class="layui-input" name="birthday" id="birthday"  placeholder="请输入出生年月">
                             </div>
                         </div>
 
@@ -200,10 +199,8 @@
 <script>
     layui.use(['form', 'laydate','jquery','upload'], function () {
         var $=layui.jquery;
-        $("#jobNumber").blur(function () {
-            // alert(1)
-        })
-
+        $("#birthday").val("#date(me.birthday??,'yyyy-MM-dd')");
+        // alert("#date(me.birthday??,'yyyy-MM-dd')")
         var form = layui.form, laydate = layui.laydate,$=layui.jquery,upload=layui.upload;
         var file='';
         //普通图片上传

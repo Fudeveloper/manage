@@ -41,6 +41,8 @@ public class ResearchSubject extends BaseEntity {
     @ManyToOne
     Teacher teacher;
 
+
+
     public Dictionary getMyRanking() {
         return myRanking;
     }
